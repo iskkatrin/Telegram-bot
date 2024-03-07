@@ -1,4 +1,4 @@
-package pro.sky.telegrambot;
+package pro.sky.telegrambot.model;
 
 import lombok.*;
 import org.apache.logging.log4j.message.Message;
@@ -10,6 +10,6 @@ import org.apache.logging.log4j.message.Message;
 @Setter
 
 public class Update {
-    private int updateId;
+    private int Id;
     private Message message;
 }

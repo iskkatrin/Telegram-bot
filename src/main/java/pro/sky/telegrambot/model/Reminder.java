@@ -1,4 +1,4 @@
-package pro.sky.telegrambot;
+package pro.sky.telegrambot.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,20 +7,21 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
 
-@AllArgsConstructor
-@NoArgsConstructor
+@Entity
 @Getter
 @Setter
-@Entity
-public class NotificationTask {
-    @Id
-    @GeneratedValue
+@AllArgsConstructor
+@NoArgsConstructor
 
+public class Reminder {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String title;
+
     private LocalDateTime dateTime;
-    private boolean completed;
+    private String text;
 }

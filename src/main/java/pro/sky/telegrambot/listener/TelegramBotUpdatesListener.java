@@ -16,14 +16,9 @@ import java.util.List;
 public class TelegramBotUpdatesListener implements UpdatesListener {
 
     private Logger logger = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
-    private Update update;
 
     @Autowired
     private TelegramBot telegramBot;
-
-    public TelegramBotUpdatesListener(Update update) {
-        this.update = update;
-    }
 
     @PostConstruct
     public void init() {
@@ -31,13 +26,13 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     }
 
     @Override
-    public int process(List<Update> updates) {
+    public int process( List <Update> updates) {
         updates.forEach(update -> {
             logger.info("Processing update: {}", update);
-            if (update.getMessage().getText().equals("/start")) {
-                String chatId = update.getMessage().getChat().getId();
+            if (update.message().text().equals("/start")) {
+                String chatId = update.message().chat().Id();
                 String greetingMessage = "Привет! Я бот. Как я могу помочь вам?";
-                telegramBot.sendMessage(new SendMessage(chatId, greetingMessage));
+                telegramBot.execute(new SendMessage(chatId, greetingMessage));
             }
         });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;

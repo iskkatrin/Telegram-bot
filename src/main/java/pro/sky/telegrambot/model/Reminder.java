@@ -20,8 +20,8 @@ import java.time.LocalDateTime;
 public class Reminder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+        private Long id;
 
-    private LocalDateTime dateTime;
-    private String text;
-}
+        private LocalDateTime dateTime;
+        private String text;
+    }

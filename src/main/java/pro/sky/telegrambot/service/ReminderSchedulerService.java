@@ -1,9 +1,9 @@
-package pro.sky.telegrambot.Service;
+package pro.sky.telegrambot.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import pro.sky.telegrambot.Repository.ReminderRepository;
+import pro.sky.telegrambot.repository.ReminderRepository;
 import pro.sky.telegrambot.model.Reminder;
 
 import java.time.LocalDateTime;

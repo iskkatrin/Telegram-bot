@@ -1,4 +1,4 @@
-package pro.sky.telegrambot.Service;
+package pro.sky.telegrambot.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

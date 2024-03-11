@@ -1,4 +1,4 @@
-package pro.sky.telegrambot.Repository;
+package pro.sky.telegrambot.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

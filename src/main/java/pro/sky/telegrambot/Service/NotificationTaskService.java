@@ -12,6 +12,7 @@ public class NotificationTaskService {
 
     private void sendNotification(String Id, String text) {
         System.out.println("Отправка уведомления в чат " + Id + ": " + text);
+
     }
 }
 

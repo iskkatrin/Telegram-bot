@@ -1,10 +1,12 @@
 package pro.sky.telegrambot.service;
 
+import com.pengrad.telegrambot.TelegramBot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import pro.sky.telegrambot.configuration.TelegramBotConfiguration;
+import pro.sky.telegrambot.model.NotificationTask;
 import pro.sky.telegrambot.repository.ReminderRepository;
-import pro.sky.telegrambot.model.Reminder;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -13,19 +15,25 @@ import java.util.List;
 @Service
 public class ReminderSchedulerService {
 
-    @Autowired
     private ReminderRepository reminderRepository;
+
+    private TelegramBot telegramBot;
+
+    public ReminderSchedulerService(ReminderRepository reminderRepository, TelegramBot telegramBot) {
+        this.reminderRepository = reminderRepository;
+        this.telegramBot = telegramBot;
+    }
+
 
     @Scheduled(cron = "0 * * * * *")
     public void checkReminders() {
         LocalDateTime currentMinute = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
 
-        List<Reminder> reminders = reminderRepository.findRemindersByTime(currentMinute);
+        List<NotificationTask> notificationTasks = reminderRepository.findAllByLocalDateTime(currentMinute);
 
-        System.out.println("Найдены записи для уведомления:");
-        for (Reminder reminder : reminders) {
-            System.out.println("Дата и время уведомления: " + reminder.getDateTime());
-            System.out.println("Текст уведомления: " + reminder.getText());
+        for (NotificationTask notificationTask : notificationTasks) {
+            System.out.println("Дата и время уведомления: " + notificationTask.getLocalDateTime());
+            System.out.println("Текст уведомления: " + notificationTask.getMessageText());
         }
     }
 }

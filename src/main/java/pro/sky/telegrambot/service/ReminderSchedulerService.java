@@ -1,6 +1,7 @@
 package pro.sky.telegrambot.service;
 
 import com.pengrad.telegrambot.TelegramBot;
+import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,7 @@ public class ReminderSchedulerService {
         for (NotificationTask notificationTask : notificationTasks) {
             System.out.println("Дата и время уведомления: " + notificationTask.getLocalDateTime());
             System.out.println("Текст уведомления: " + notificationTask.getMessageText());
+            telegramBot.execute(new SendMessage(notificationTask.getChatId(), notificationTask.getMessageText()));
         }
     }
 }

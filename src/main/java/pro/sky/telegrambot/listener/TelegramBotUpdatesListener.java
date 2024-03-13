@@ -42,6 +42,8 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 Long chatId = update.message().chat().id();
                 String greetingMessage = "Привет! Я бот. Как я могу помочь вам?";
                 telegramBot.execute(new SendMessage(chatId, greetingMessage));
+            } else {
+                processIncomingMessage(update.message().text());
             }
         });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
@@ -58,8 +60,8 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
             LocalDateTime dateTime = LocalDateTime.parse(dateTimeString, DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"));
 
             NotificationTask notificationTask = new NotificationTask();
-            notificationTask.setLocaldateTime(dateTime);
-            notificationTask.setMessageText(messageText);
+            notificationTask.setLocalDateTime(dateTime);
+            notificationTask.setMessageText(text);
 
             notificationTaskService.save(notificationTask);
         }

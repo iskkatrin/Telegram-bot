@@ -25,7 +25,7 @@ public class NotificationTask {
     private Long chatId;
 
     @Column(name = "time_and_date")
-    private LocalDateTime localdateTime;
+    private LocalDateTime localDateTime;
 
     @Column(name = "messageText")
     private String messageText;

@@ -14,6 +14,7 @@ import pro.sky.telegrambot.service.NotificationTaskService;
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -35,7 +36,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     }
 
     @Override
-    public int process( List <Update> updates) {
+    public int process(List<Update> updates) {
         updates.forEach(update -> {
             logger.info("Processing update: {}", update);
             if (update.message().text().equals("/start")) {
@@ -50,20 +51,25 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     }
 
     public void processIncomingMessage(String message) {
-        Pattern pattern = Pattern.compile("([0-9]{2}\\.[0-9]{2}\\.[0-9]{4} [0-9]{2}:[0-9]{2}) (.+)");
+        Pattern pattern = Pattern.compile("([0-9.:/\\s]{16})(\\s)([\\W]+)");
+
         Matcher matcher = pattern.matcher(message);
 
         if (matcher.find()) {
             String dateTimeString = matcher.group(1);
             String text = matcher.group(2);
 
-            LocalDateTime dateTime = LocalDateTime.parse(dateTimeString, DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"));
+            try {
+                LocalDateTime dateTime = LocalDateTime.parse(dateTimeString, DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"));
 
-            NotificationTask notificationTask = new NotificationTask();
-            notificationTask.setLocalDateTime(dateTime);
-            notificationTask.setMessageText(text);
+                NotificationTask notificationTask = new NotificationTask();
+                notificationTask.setLocalDateTime(dateTime);
+                notificationTask.setMessageText(text);
 
-            notificationTaskService.save(notificationTask);
+                notificationTaskService.save(notificationTask);
+            } catch (DateTimeParseException e) {
+                logger.error("Ошибка при парсинге даты и времени: {}", e.getMessage());
+            }
         }
     }
 }

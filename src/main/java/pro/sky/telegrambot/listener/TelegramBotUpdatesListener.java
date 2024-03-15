@@ -44,20 +44,21 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 String greetingMessage = "Привет! Я бот. Как я могу помочь вам?";
                 telegramBot.execute(new SendMessage(chatId, greetingMessage));
             } else {
-                processIncomingMessage(update.message().text());
+                processIncomingMessage(update.message().chat().id(), update.message().text());
             }
         });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
 
-    public void processIncomingMessage(String message) {
+    public void processIncomingMessage(Long chatId, String message) {
+
         Pattern pattern = Pattern.compile("([0-9.:/\\s]{16})(\\s)([\\W]+)");
 
         Matcher matcher = pattern.matcher(message);
 
         if (matcher.find()) {
             String dateTimeString = matcher.group(1);
-            String text = matcher.group(2);
+            String text = matcher.group(3);
 
             try {
                 LocalDateTime dateTime = LocalDateTime.parse(dateTimeString, DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"));
@@ -65,6 +66,8 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 NotificationTask notificationTask = new NotificationTask();
                 notificationTask.setLocalDateTime(dateTime);
                 notificationTask.setMessageText(text);
+                notificationTask.setChatId(chatId);
+
 
                 notificationTaskService.save(notificationTask);
             } catch (DateTimeParseException e) {
